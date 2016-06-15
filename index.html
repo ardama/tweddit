@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Tweddit</title>
+
+<script src="js/vendor/jquery.min.js"></script>
+<script src="js/vendor/angular.min.js"></script>
+<script src="js/classes/comment.js"></script>
+<script src="js/classes/post.js"></script>
+<script src="js/classes/user.js"></script>
+<script src="js/main.js"></script>
+
+<link href="css/style.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+  <div ng-app="Tweddit" ng-controller="MainController" class="content">
+    <div class="container new-post-container">
+      <div class="new-post-header">
+      </div>
+      <div class="new-post-input-container">
+        <textarea class="new-post-input" maxlength="140"
+                  placeholder="{{newPost.placeholder}}" ng-model="newPost.content">
+        </textarea>
+      </div>
+      <div class="new-post-submit button-primary" ng-click="submitPost()">
+        Submit
+      </div>
+    </div>
+
+    <div class="container posts">
+      <div ng-repeat="post in posts">
+        <div class="post card">
+          <div class="post-user-image"><img src="{{'resources/' + post.user.image}}" width="40"/></div>
+          <div class="post-header">
+            <div class="post-user">{{post.user.name}}</div>
+            <div class="post-time">{{post.getDate()}}</div>
+            <div class="post-likes">{{post.likes}}</div>
+          </div>
+          <div class="post-content">{{post.content}}</div>
+          <div class="post-actions">
+            <div ng-if="newComment.post === post" class="post-action post-action-comment" ng-click="hideComments(post)">
+              Hide comments
+            </div>
+            <div ng-if="newComment.post !== post" class="post-action post-action-comment" ng-click="showComments(post)">
+              Show Comments ({{post.comments.length}})
+            </div>
+            <div class="post-action" ng-click="likePost(post, true)">
+              Dislike
+            </div>
+            <div class="post-action" ng-click="likePost(post)">
+                Like
+            </div>
+            <div ng-if="isFollowing(currentUser, post.user)" class="post-action" ng-click="unfollowUser(post.user)">
+              Unfollow
+            </div>
+            <div ng-if="!isFollowing(currentUser, post.user)" class="post-action" ng-click="followUser(post.user)">
+              Follow
+            </div>
+          </div>
+          <div ng-if="newComment.post === post">
+            <div class="post-comments">
+              <div ng-repeat="comment in post.comments" class="comments">
+                <div class="comment">
+                  <div class="comment-user-image"><img src="{{'resources/' + comment.user.image}}" width="32"/></div>
+                  <div class="comment-header">
+                    <div class="comment-user">{{comment.user.name}}</div>
+                    <div class="comment-time">{{comment.getDate()}}</div>
+                    <div class="comment-likes">{{comment.likes}}</div>
+                  </div>
+                  <div class="comment-content">{{comment.content}}</div>
+                  <div class="comment-actions">
+                    <div class="comment-action" ng-click="likeComment(comment, true)">
+                      Dislike
+                    </div>
+                    <div class="comment-action" ng-click="likeComment(comment)">
+                      Like
+                    </div>
+                    <div ng-if="isFollowing(currentUser, comment.user)" class="comment-action" ng-click="unfollowUser(comment.user)">
+                      Unfollow
+                    </div>
+                    <div ng-if="!isFollowing(currentUser, comment.user)" class="comment-action" ng-click="followUser(comment.user)">
+                      Follow
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="container new-comment-container">
+                <div class="new-comment-header">
+                </div>
+                <div class="new-comment-input-container">
+                  <textarea class="new-comment-input" maxlength="140"
+                            placeholder="{{newComment.placeholder}}" ng-model="newComment.content">
+                  </textarea>
+                </div>
+                <div class="new-comment-submit button-primary" ng-click="submitComment()">
+                  Submit
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</body>
+</html>
