@@ -1,14 +1,24 @@
 body {
   margin: 0;
+  background-color: #3289C8;
 }
 .content {
-  float: left;
   font-family: "arial";
-  width: 80%;
+  width: 1000px;
   min-height: 100vh;
-  margin: 0 10%;
-  background-color: #eee;
+  margin: auto;
   box-sizing: border-box;
+
+}
+
+
+.column {
+  float: left;
+  height: 100vh;
+  width: 500px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.37);
 
 }
 
@@ -16,6 +26,12 @@ body {
   float: left;
   width: 100%;
   box-sizing: border-box;
+}
+
+.feed {
+  background-color: #eee;
+  position: relative;
+  z-index: 2;
 }
 
 /* New Post */
@@ -56,14 +72,14 @@ body {
 /* Post */
 .posts {
   float: left;
-  padding: 16px;
+  padding: 20px;
 }
 
 .post {
   float: left;
-  width: 400px;
+  width: 460px;
   padding: 8px 8px 4px 8px;
-  margin: 4px;
+  margin: 4px auto;
   box-sizing: border-box;
   background-color: #fff;
 }
@@ -79,6 +95,7 @@ body {
   font-weight: bold;
   color: #3289C8;
   font-size: 16px;
+  cursor: pointer;
 }
 
 .post-user-image {
@@ -87,6 +104,7 @@ body {
   overflow: hidden;
 
   margin: 0 6px;
+  cursor: pointer;
 }
 
 .post-time {
@@ -156,6 +174,7 @@ body {
   font-weight: bold;
   color: #3289C8;
   font-size: 14px;
+  cursor: pointer;
 }
 
 .comment-user-image {
@@ -164,6 +183,7 @@ body {
   overflow: hidden;
 
   margin: 0 6px;
+  cursor: pointer;
 }
 
 .comment-time {
@@ -241,9 +261,135 @@ body {
   padding: 0px 8px;
 }
 
+/* Profile */
+.profile {
+  padding: 24px 16px 16px;
+  box-sizing: border-box;
+  background-color: #eee;
+}
 
+.user-image {
+  float: left;
+  border-radius: 100%;
+  overflow: hidden;
+}
 
-/* COMPONENTS */
+.user-name {
+  float: left;
+  width: calc(100% - 72px);
+  font-size: 24px;
+  font-weight: bold;
+  color: #3289C8;
+  line-height: 32px;
+  margin: 4px 0 0 12px;
+}
+
+.user-time {
+  float: left;
+  color: #999;
+  margin-left: 12px;
+}
+
+.user-description {
+  float: left;
+  width: 100%;
+  padding: 16px;
+  text-align: justify;
+  box-sizing: border-box;
+  color: #444;
+  border-top: 1px solid #bbb;
+  margin: 8px 0;
+}
+
+.user-likes {
+  float: left;
+  width: 100%;
+}
+
+.user-likes-label {
+  float: left;
+  width: 100%;
+}
+
+.likes {
+  float: left;
+  width: 33.333%;
+  box-sizing: border-box;
+  margin-bottom: 16px;
+}
+
+.like-label {
+  float: left;
+  width: 100%;
+  text-align: center;
+  color: #999;
+}
+
+.like-count {
+  float: left;
+  width: 100%;
+  text-align: center;
+  line-height: 32px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #3289C8;
+}
+
+.user-comment-likes {
+  border-left: 1px solid #bbb;
+  border-right: 1px solid #bbb;
+}
+
+.user-followers,
+.user-following {
+  float: left;
+  width: 50%;
+  box-sizing: border-box;
+  margin-top: 12px;
+}
+
+.user-followers-label,
+.user-following-label {
+  float: left;
+  width: 100%;
+  margin-bottom: 6px;
+  text-align: center;
+  cursor: pointer;
+  color: #3289C8;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.user {
+  float: left;
+  width: calc(100% - 8px);
+  margin: 4px;
+  background-color: #fff;
+}
+
+.followed-user-name,
+.following-user-name {
+  float: left;
+  width: calc(100% - 44px);
+  font-weight: bold;
+  color: #3289C8;
+  font-size: 14px;
+  cursor: pointer;
+  text-align: left;
+  line-height: 40px;
+}
+
+.followed-user-image,
+.following-user-image {
+  float: left;
+  border-radius: 100%;
+  overflow: hidden;
+
+  margin: 4px 6px 0;
+  cursor: pointer;
+}
+
+/* Components */
 .card {
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.37);
 }

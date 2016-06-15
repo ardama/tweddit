@@ -4,6 +4,9 @@ var app = angular.module('Tweddit', []).controller('MainController', ['$scope', 
   $scope.posts = grabTestPosts($scope.users);
 
   $scope.currentUser = $scope.users[0];
+  $scope.displayedUser = $scope.currentUser;
+  $scope.displayedFollowers = true;
+  $scope.displayedFollowing = true;
 
   $scope.newPost = {
     placeholder: "What's on your mind? (140 characters)",
@@ -18,13 +21,17 @@ var app = angular.module('Tweddit', []).controller('MainController', ['$scope', 
 
   $scope.likePost = function(post, dislike) {
     if ($scope.currentUser) {
-      post.likes += dislike ? -1 : 1;
+      var val = dislike ? -1 : 1;
+      post.likes += val;
+      post.user.postLikes += val;
     }
   };
 
   $scope.likeComment = function(comment, dislike) {
     if ($scope.currentUser) {
-      comment.likes += dislike ? -1 : 1;
+      var val = dislike ? -1 : 1;
+      comment.likes += val;
+      comment.user.commentLikes += val;
     }
   };
 
@@ -74,17 +81,44 @@ var app = angular.module('Tweddit', []).controller('MainController', ['$scope', 
     $scope.newComment.content = "";
   };
 
-}]);
+  $scope.showUser = function(user) {
+    if (user !== $scope.displayedUser) {
+      user = user || $scope.currentUser;
+      $scope.displayedUser = user;
+    }
+  };
+
+  $scope.showFollowers = function() {
+    $scope.displayedFollowers = true;
+  };
+
+  $scope.hideFollowers = function() {
+    $scope.displayedFollowers = false;
+  };
+
+  $scope.showFollowing = function() {
+    $scope.displayedFollowing = true;
+  };
+
+  $scope.hideFollowing = function() {
+    $scope.displayedFollowing = false;
+  };
+}]).filter('reverse', function() {
+  return function(items) {
+    return items.slice().reverse();
+  };
+});
 
 
 
 
 function createTestUsers() {
-  var names = ["John", "Mary", "Frank"];
+  var names = ["John Smith", "Mary Lamb", "Frank N. Stein"];
   var users = [];
 
   for (var i = 0; i < names.length; i++) {
-    var u = new User(names[i], "icon-user-default.png");
+    var d = "Hello! My name is " + names[i] + ". I like to do things, including post on this terrible website.  Why am I here?  Somebody save me.";
+    var u = new User(names[i], d, "icon-user-default.png", new Date());
     for (var j = 0; j <= i; j++) {
       var p = new Post(u.name + " Test Post " + j, u, new Date());
       u.posts.push(p);

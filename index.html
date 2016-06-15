@@ -15,92 +15,145 @@
 
 <body>
   <div ng-app="Tweddit" ng-controller="MainController" class="content">
-    <div class="container new-post-container">
-      <div class="new-post-header">
+    <div class="feed column">
+      <div class="container new-post-container">
+        <div class="new-post-header">
+        </div>
+        <div class="new-post-input-container">
+          <textarea class="new-post-input" maxlength="140"
+                    placeholder="{{newPost.placeholder}}" ng-model="newPost.content">
+          </textarea>
+        </div>
+        <div class="new-post-submit button-primary" ng-click="submitPost()">
+          Submit
+        </div>
       </div>
-      <div class="new-post-input-container">
-        <textarea class="new-post-input" maxlength="140"
-                  placeholder="{{newPost.placeholder}}" ng-model="newPost.content">
-        </textarea>
-      </div>
-      <div class="new-post-submit button-primary" ng-click="submitPost()">
-        Submit
-      </div>
-    </div>
 
-    <div class="container posts">
-      <div ng-repeat="post in posts">
-        <div class="post card">
-          <div class="post-user-image"><img src="{{'resources/' + post.user.image}}" width="40"/></div>
-          <div class="post-header">
-            <div class="post-user">{{post.user.name}}</div>
-            <div class="post-time">{{post.getDate()}}</div>
-            <div class="post-likes">{{post.likes}}</div>
-          </div>
-          <div class="post-content">{{post.content}}</div>
-          <div class="post-actions">
-            <div ng-if="newComment.post === post" class="post-action post-action-comment" ng-click="hideComments(post)">
-              Hide comments
+      <div class="container posts">
+        <div ng-repeat="post in posts | reverse">
+          <div class="post card">
+            <div class="post-user-image" ng-click="showUser(post.user)"><img src="{{'resources/' + post.user.image}}" width="40"/></div>
+            <div class="post-header">
+              <div class="post-user" ng-click="showUser(post.user)">{{post.user.name}}</div>
+              <div class="post-time">{{post.getDate()}}</div>
+              <div class="post-likes">{{post.likes}}</div>
             </div>
-            <div ng-if="newComment.post !== post" class="post-action post-action-comment" ng-click="showComments(post)">
-              Show Comments ({{post.comments.length}})
-            </div>
-            <div class="post-action" ng-click="likePost(post, true)">
-              Dislike
-            </div>
-            <div class="post-action" ng-click="likePost(post)">
-                Like
-            </div>
-            <div ng-if="isFollowing(currentUser, post.user)" class="post-action" ng-click="unfollowUser(post.user)">
-              Unfollow
-            </div>
-            <div ng-if="!isFollowing(currentUser, post.user)" class="post-action" ng-click="followUser(post.user)">
-              Follow
-            </div>
-          </div>
-          <div ng-if="newComment.post === post">
-            <div class="post-comments">
-              <div ng-repeat="comment in post.comments" class="comments">
-                <div class="comment">
-                  <div class="comment-user-image"><img src="{{'resources/' + comment.user.image}}" width="32"/></div>
-                  <div class="comment-header">
-                    <div class="comment-user">{{comment.user.name}}</div>
-                    <div class="comment-time">{{comment.getDate()}}</div>
-                    <div class="comment-likes">{{comment.likes}}</div>
-                  </div>
-                  <div class="comment-content">{{comment.content}}</div>
-                  <div class="comment-actions">
-                    <div class="comment-action" ng-click="likeComment(comment, true)">
-                      Dislike
-                    </div>
-                    <div class="comment-action" ng-click="likeComment(comment)">
-                      Like
-                    </div>
-                    <div ng-if="isFollowing(currentUser, comment.user)" class="comment-action" ng-click="unfollowUser(comment.user)">
-                      Unfollow
-                    </div>
-                    <div ng-if="!isFollowing(currentUser, comment.user)" class="comment-action" ng-click="followUser(comment.user)">
-                      Follow
-                    </div>
-                  </div>
-                </div>
+            <div class="post-content">{{post.content}}</div>
+            <div class="post-actions">
+              <div ng-if="newComment.post === post" class="post-action post-action-comment" ng-click="hideComments(post)">
+                Hide comments
               </div>
-              <div class="container new-comment-container">
-                <div class="new-comment-header">
+              <div ng-if="newComment.post !== post" class="post-action post-action-comment" ng-click="showComments(post)">
+                Show Comments ({{post.comments.length}})
+              </div>
+              <div class="post-action" ng-click="likePost(post, true)">
+                Dislike
+              </div>
+              <div class="post-action" ng-click="likePost(post)">
+                  Like
+              </div>
+              <div ng-if="isFollowing(currentUser, post.user)" class="post-action" ng-click="unfollowUser(post.user)">
+                Unfollow
+              </div>
+              <div ng-if="!isFollowing(currentUser, post.user)" class="post-action" ng-click="followUser(post.user)">
+                Follow
+              </div>
+            </div>
+            <div ng-if="newComment.post === post">
+              <div class="post-comments">
+                <div ng-repeat="comment in post.comments" class="comments">
+                  <div class="comment">
+                    <div class="comment-user-image" ng-click="showUser(comment.user)"><img src="{{'resources/' + comment.user.image}}" width="32"/></div>
+                    <div class="comment-header">
+                      <div class="comment-user" ng-click="showUser(comment.user)">{{comment.user.name}}</div>
+                      <div class="comment-time">{{comment.getDate()}}</div>
+                      <div class="comment-likes">{{comment.likes}}</div>
+                    </div>
+                    <div class="comment-content">{{comment.content}}</div>
+                    <div class="comment-actions">
+                      <div class="comment-action" ng-click="likeComment(comment, true)">
+                        Dislike
+                      </div>
+                      <div class="comment-action" ng-click="likeComment(comment)">
+                        Like
+                      </div>
+                      <div ng-if="isFollowing(currentUser, comment.user)" class="comment-action" ng-click="unfollowUser(comment.user)">
+                        Unfollow
+                      </div>
+                      <div ng-if="!isFollowing(currentUser, comment.user)" class="comment-action" ng-click="followUser(comment.user)">
+                        Follow
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div class="new-comment-input-container">
-                  <textarea class="new-comment-input" maxlength="140"
-                            placeholder="{{newComment.placeholder}}" ng-model="newComment.content">
-                  </textarea>
-                </div>
-                <div class="new-comment-submit button-primary" ng-click="submitComment()">
-                  Submit
+                <div class="container new-comment-container">
+                  <div class="new-comment-header">
+                  </div>
+                  <div class="new-comment-input-container">
+                    <textarea class="new-comment-input" maxlength="140"
+                              placeholder="{{newComment.placeholder}}" ng-model="newComment.content">
+                    </textarea>
+                  </div>
+                  <div class="new-comment-submit button-primary" ng-click="submitComment()">
+                    Submit
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+    </div>
+    <div class="profile column">
+      <div class="user-image"><img src="{{'resources/' + displayedUser.image}}" width="60"/></div>
+      <div class="user-name">{{displayedUser.name}}</div>
+      <br/>
+      <div class="user-time">user since {{displayedUser.getDate()}}</div>
+      <div class="user-description">{{displayedUser.description}}</div>
+      <div class="user-likes">
+        <div class="user-likes-label"></div>
+        <div class="user-post-likes likes">
+          <div class="like-label">Post</div>
+          <div class="like-count">{{displayedUser.postLikes}}</div>
+        </div>
+        <div class="user-comment-likes likes">
+          <div class="like-label">Comment</div>
+          <div class="like-count">{{displayedUser.commentLikes}}</div>
+        </div>
+        <div class="user-total-likes likes">
+          <div class="like-label">Total</div>
+          <div class="like-count">{{displayedUser.commentLikes + displayedUser.postLikes}}</div>
+        </div>
+      </div>
+      <div class="user-followers">
+        <div ng-if="!displayedFollowers" class="user-followers-label" ng-click="showFollowers()">
+          Show Followers ({{displayedUser.followers.length}})
+        </div>
+        <div ng-if="displayedFollowers" class="user-followers-label" ng-click="hideFollowers()">
+          Hide Followers ({{displayedUser.followers.length}})
+        </div>
+        <div ng-if="displayedFollowers" ng-repeat="user in displayedUser.followers">
+          <div class="user card" ng-click="showUser(user)">
+            <div class="followed-user-image"><img src="{{'resources/' + user.image}}" width="30"/></div>
+            <div class="followed-user-name">{{user.name}}</div>
+          </div>
+        </div>
+      </div>
+      <div class="user-following">
+        <div ng-if="!displayedFollowing" class="user-following-label" ng-click="showFollowing()">
+          Show Follows ({{displayedUser.following.length}})
+        </div>
+        <div ng-if="displayedFollowing" class="user-following-label" ng-click="hideFollowing()">
+          Hide Follows ({{displayedUser.following.length}})
+        </div>
+        <div ng-if="displayedFollowing" ng-repeat="user in displayedUser.following">
+          <div class="user card" ng-click="showUser(user)">
+            <div class="followed-user-image"><img src="{{'resources/' + user.image}}" width="30"/></div>
+            <div class="followed-user-name">{{user.name}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </body>
 </html>
